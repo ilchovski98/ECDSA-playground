@@ -18,6 +18,22 @@ pragma solidity 0.8.17;
 // verify by contract verify(signer"metamask address", _message"secret message", _sig"promise result signature")
 
 contract VerifySignatureDemo {
+  string public name;
+  address immutable owner;
+
+  constructor() {
+    owner = msg.sender;
+  }
+
+  // This function is vulnerable to attacks
+  // If the owner signs a string for another contract, anybody who manages to get this signature can trigger this function
+  function changeName(string calldata _name, bytes calldata _sig) public {
+    bytes32 messageHash = getMessageHash(_name);
+    bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);
+    require(recover(ethSignedMessageHash, _sig) == owner);
+    name = _name;
+  }
+
   function verify(address _signer, string memory _message, bytes memory _sig) external pure returns (bool) {
     bytes32 messageHash = getMessageHash(_message);
     bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);
