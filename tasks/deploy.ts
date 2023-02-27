@@ -14,3 +14,10 @@ task("deploy-VerifySignatureDemo", "Deploy VerifySignatureDemo")
     const { deployVerifySignatureDemo } = await lazyImport("./../scripts/deploy-VerifySignatureDemo");
     await deployVerifySignatureDemo();
   });
+
+task("deploy-ElonCoin", "Deploy ElonCoin")
+  // .addParam("privateKey", "Deployer's private key")
+  .setAction(async () => {
+    const { deployElonCoin } = await lazyImport("./../scripts/deploy-ElonCoin");
+    await deployElonCoin();
+  });
